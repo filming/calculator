@@ -51,7 +51,7 @@ function updateDisplay(){
     if (lastBtnClickedType === "digit"){
         displayValueLabel.textContent = currNumInput;
     } 
-    else if (lastBtnClickedType === "operator"){
+    else if (lastBtnClickedType === "operator" || lastBtnClickedType === "utility"){
         displayValueLabel.textContent = firstNumber;
     }
 }
@@ -73,12 +73,7 @@ document.addEventListener("DOMContentLoaded", event => {
     const arithmeticBtns = document.querySelectorAll(".arithmetic");
 
     arithmeticBtns.forEach(currBtn => {
-        currBtn.addEventListener("click", clickEvent => {
-            
-            // allow the user to change the currently stored arithmetic operator (in the event of a missclick)
-            if (lastBtnClickedType === "operator"){
-                operator = currBtn.id;
-            }
+        currBtn.addEventListener("click", clickEvent => {            
             
             // only perform operation if numbers have been given since the last operation button click
             if (currNumInput !== ""){
@@ -102,7 +97,7 @@ document.addEventListener("DOMContentLoaded", event => {
                         displayValueLabel.textContent = "ERROR: ZERO DIVISION";
                     } 
                     else {
-                        // operate using currently stored operation before setting new one
+                        // operate using currently stored operation
                         // we now have both numbers, so we can compute the result and store it as the firstNumber
                         firstNumber = operate(operator, firstNumber, secondNumber);
                         
@@ -111,6 +106,47 @@ document.addEventListener("DOMContentLoaded", event => {
                         secondNumber = null;
 
                         lastBtnClickedType = "operator";
+                        currNumInput = "";
+                        updateDisplay();
+                    }
+                }
+            } 
+            else {
+                // user has not given us any new digit input since their last operator click, so just change the operator
+                operator = currBtn.id;
+                lastBtnClickedType = "operator";
+            }
+        });
+    });
+
+    // perform different actions when a utility button is clicked
+    const utilityBtns = document.querySelectorAll(".utility");
+
+    utilityBtns.forEach(currBtn => {
+        currBtn.addEventListener("click", clickEvent => {
+
+            if (currBtn.id === "equal"){
+                if (currNumInput !== ""){
+                    if (firstNumber === null){
+                        firstNumber = Number(currNumInput);
+    
+                        lastBtnClickedType = "utility";
+                        operator = "";
+                        currNumInput = "";
+                        updateDisplay();
+                    }
+                    else {
+                        secondNumber = Number(currNumInput);
+                        
+                        // operate using currently stored operation
+                        // we now have both numbers, so we can compute the result and store it as the firstNumber
+                        firstNumber = operate(operator, firstNumber, secondNumber);
+                        
+                        // setup the vars for the next operation
+                        operator = "";
+                        secondNumber = null;
+
+                        lastBtnClickedType = "utility";
                         currNumInput = "";
                         updateDisplay();
                     }
