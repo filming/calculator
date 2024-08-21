@@ -1,22 +1,47 @@
+let firstNumber = 0, secondNumber = null, operator = "add";
+let currNumInput = "";
+let lastBtnClickedType = "";
+const displayValueLabel = document.querySelector(".main__display-value");
+
 function add(num1, num2){
-    return num1 + num2;
+    const response = {error: false, message: null, value: null};
+
+    response.value = num1 + num2;
+
+    return response;
 }
 
 function subtract(num1, num2){
-    return num1 - num2;
+    const response = {error: false, message: null, value: null};
+    
+    response.value = num1 - num2;
+
+    return response;
 }
 
 function multiply(num1, num2){
-    return num1 * num2;
+    const response = {error: false, message: null, value: null};
+
+    response.value = num1 * num2;
+
+    return response;
 }
 
 function divide(num1, num2){
+    const response = {error: false, message: null, value: null};
+
     if (num2 === 0){
-        return NaN;
+        response.error = true;
+        response.message = "ERROR: ZERO DIVISION";   
     }
-    return num1 / num2;
+    else {
+        response.value = num1 / num2;
+    }
+
+    return response;
 }
 
+// handles the overall operation of two numbers and an operator
 function operate(operator, firstNumber, secondNumber){
     switch (operator){
         case "add":
@@ -33,31 +58,69 @@ function operate(operator, firstNumber, secondNumber){
     }
 }
 
-let firstNumber = null, secondNumber = null, operator = "";
-const displayValueLabel = document.querySelector(".main__display-value");
-
-let currNumInput = "";
-let lastBtnClickedType = "";
-
+// update the UI with values stored in our variables
 function updateDisplay(){
-    // debug logging
-    console.log("==============");
-    console.log("cNI = " + currNumInput);
-    console.log("fN = " + firstNumber);
-    console.log("sN = " + secondNumber);
-    console.log("O = " + operator);
-    console.log("==============");
-
     if (lastBtnClickedType === "digit"){
         displayValueLabel.textContent = currNumInput;
-    } 
-    else if (lastBtnClickedType === "operator" || lastBtnClickedType === "utility"){
+    }
+    else if (lastBtnClickedType === "operator" || lastBtnClickedType === "utility" || lastBtnClickedType === ""){
         displayValueLabel.textContent = firstNumber;
     }
 }
 
+// set calculator back to its initial state
+function resetCalculator(){
+    firstNumber = 0;
+    secondNumber = null;
+    operator = "add";
+    currNumInput = "";
+    lastBtnClickedType = "";
+}
+
+// perform an operation with the currently stored numbers and operator and update display with result
+function performOperation(operationType, currBtn){
+
+    // perform operation only if user has given numeric input since the last operation button click
+    if (currNumInput !== ""){
+
+        secondNumber = Number(currNumInput);
+
+        // use both numbers and the operator currently stored to get a result
+        const operationResponse = operate(operator, firstNumber, secondNumber);
+
+        // reset the calculator if we come across an operation error
+        if (operationResponse.error === true){
+            resetCalculator();
+            displayValueLabel.textContent = operationResponse.message;
+        }
+        else {
+            firstNumber = operationResponse.value;
+
+            // setup the vars for the next operation
+            currNumInput = "";
+            secondNumber = null;
+
+            if (operationType === "arithmetic"){
+                operator = currBtn.id;
+                lastBtnClickedType = "operator";
+            } 
+            else if (operationType === "utility"){
+                operator = "add";
+                lastBtnClickedType = "utility";
+            }
+
+            updateDisplay(); 
+        }
+
+    } 
+    // allows the user to change the previously set operator (for example, if they misclick or change their mind)
+    else if (operationType === "arithmetic"){
+        operator = currBtn.id;
+    }
+}
+
 document.addEventListener("DOMContentLoaded", event => {
-    // update the display & variables when a digit is clicked
+    // update the variables & display when a digit is clicked
     const numericBtns = document.querySelectorAll(".digit");
 
     numericBtns.forEach(currBtn => {
@@ -69,53 +132,12 @@ document.addEventListener("DOMContentLoaded", event => {
         })
     });
 
-    // update the first & second num vals when user clicks an arithmetic operator
+    // perform operations when user clicks on arithmetic buttons
     const arithmeticBtns = document.querySelectorAll(".arithmetic");
 
     arithmeticBtns.forEach(currBtn => {
-        currBtn.addEventListener("click", clickEvent => {            
-            
-            // only perform operation if numbers have been given since the last operation button click
-            if (currNumInput !== ""){
-                if (firstNumber === null){
-                    firstNumber = Number(currNumInput);
-                    operator = currBtn.id;
-
-                    lastBtnClickedType = "operator";
-                    currNumInput = "";
-                    updateDisplay();
-                }
-                else {
-                    secondNumber = Number(currNumInput);
-                    
-                    // reset calculator instance and show an error if user is dividing by 0.
-                    if (secondNumber === 0 && operator === "divide") {
-                        firstNumber = null, secondNumber = null, operator = "";
-                        currNumInput = "";
-                        lastBtnClickedType = "";
-                        
-                        displayValueLabel.textContent = "ERROR: ZERO DIVISION";
-                    } 
-                    else {
-                        // operate using currently stored operation
-                        // we now have both numbers, so we can compute the result and store it as the firstNumber
-                        firstNumber = operate(operator, firstNumber, secondNumber);
-                        
-                        // setup the vars for the next operation
-                        operator = currBtn.id;
-                        secondNumber = null;
-
-                        lastBtnClickedType = "operator";
-                        currNumInput = "";
-                        updateDisplay();
-                    }
-                }
-            } 
-            else {
-                // user has not given us any new digit input since their last operator click, so just change the operator
-                operator = currBtn.id;
-                lastBtnClickedType = "operator";
-            }
+        currBtn.addEventListener("click", clickEvent => {
+            performOperation("arithmetic", currBtn);
         });
     });
 
@@ -126,31 +148,12 @@ document.addEventListener("DOMContentLoaded", event => {
         currBtn.addEventListener("click", clickEvent => {
 
             if (currBtn.id === "equal"){
-                if (currNumInput !== ""){
-                    if (firstNumber === null){
-                        firstNumber = Number(currNumInput);
-    
-                        lastBtnClickedType = "utility";
-                        operator = "";
-                        currNumInput = "";
-                        updateDisplay();
-                    }
-                    else {
-                        secondNumber = Number(currNumInput);
-                        
-                        // operate using currently stored operation
-                        // we now have both numbers, so we can compute the result and store it as the firstNumber
-                        firstNumber = operate(operator, firstNumber, secondNumber);
-                        
-                        // setup the vars for the next operation
-                        operator = "";
-                        secondNumber = null;
-
-                        lastBtnClickedType = "utility";
-                        currNumInput = "";
-                        updateDisplay();
-                    }
-                }
+                performOperation("utility", currBtn);
+            }
+            else if (currBtn.id === "clear"){
+                // set the calculator to its initial state when clear button is clicked
+                resetCalculator();
+                updateDisplay();
             }
         });
     });
