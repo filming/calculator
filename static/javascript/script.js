@@ -60,7 +60,7 @@ function operate(operator, firstNumber, secondNumber){
 
 // update the UI with values stored in our variables
 function updateDisplay(){
-    if (lastBtnClickedType === "digit"){
+    if (lastBtnClickedType === "digit" || lastBtnClickedType === "decimal"){
         displayValueLabel.textContent = currNumInput;
     }
     else if (lastBtnClickedType === "operator" || lastBtnClickedType === "utility" || lastBtnClickedType === ""){
@@ -154,6 +154,26 @@ document.addEventListener("DOMContentLoaded", event => {
                 // set the calculator to its initial state when clear button is clicked
                 resetCalculator();
                 updateDisplay();
+            }
+            else if (currBtn.id === "decimal"){
+                // only allow up to one decimal in the user input string
+                if (!currNumInput.includes(".")){
+                    if (currNumInput !== ""){
+                        currNumInput += ".";
+                    }
+                    else {
+                        // make sure we aren't adding a decimal when our display value already has a decimal in it
+                        if (firstNumber % 1 === 0){
+                            currNumInput = firstNumber + ".";
+                        }
+                        else {
+                            currNumInput = "0.";
+                        }
+                    }
+
+                    lastBtnClickedType = "decimal";
+                    updateDisplay();
+                }
             }
         });
     });
