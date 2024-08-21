@@ -35,7 +35,7 @@ function divide(num1, num2){
         response.message = "ERROR: ZERO DIVISION";   
     }
     else {
-        response.value = num1 / num2;
+        response.value = Number((num1 / num2).toFixed(15));
     }
 
     return response;
