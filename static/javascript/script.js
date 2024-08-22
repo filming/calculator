@@ -162,13 +162,8 @@ document.addEventListener("DOMContentLoaded", event => {
                         currNumInput += ".";
                     }
                     else {
-                        // make sure we aren't adding a decimal when our display value already has a decimal in it
-                        if (firstNumber % 1 === 0){
-                            currNumInput = firstNumber + ".";
-                        }
-                        else {
-                            currNumInput = "0.";
-                        }
+                        // empty input string means decimal number should start with a number
+                        currNumInput = "0.";
                     }
 
                     lastBtnClickedType = "decimal";
