@@ -41,6 +41,20 @@ function divide(num1, num2){
     return response;
 }
 
+function modulo(num1, num2){
+    const response = {error: false, message: null, value: null};
+
+    if (num2 === 0){
+        response.error = true;
+        response.message = "ERROR: ZERO DIVISION";   
+    }
+    else {
+        response.value = num1 % num2;
+    }
+
+    return response;
+}
+
 // handles the overall operation of two numbers and an operator
 function operate(operator, firstNumber, secondNumber){
     switch (operator){
@@ -55,6 +69,9 @@ function operate(operator, firstNumber, secondNumber){
 
         case "divide":
             return divide(firstNumber, secondNumber);
+
+        case "modulo":
+            return modulo(firstNumber, secondNumber);
     }
 }
 
