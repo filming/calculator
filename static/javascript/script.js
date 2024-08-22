@@ -60,7 +60,7 @@ function operate(operator, firstNumber, secondNumber){
 
 // update the UI with values stored in our variables
 function updateDisplay(){
-    if (lastBtnClickedType === "digit" || lastBtnClickedType === "decimal"){
+    if (lastBtnClickedType === "digit" || lastBtnClickedType === "decimal" || lastBtnClickedType === "backspace"){
         displayValueLabel.textContent = currNumInput;
     }
     else if (lastBtnClickedType === "operator" || lastBtnClickedType === "utility" || lastBtnClickedType === ""){
@@ -125,7 +125,12 @@ document.addEventListener("DOMContentLoaded", event => {
 
     numericBtns.forEach(currBtn => {
         currBtn.addEventListener("click", clickEvent => {
-            currNumInput += currBtn.textContent;
+            if (currNumInput === "0"){
+                currNumInput = currBtn.textContent;
+            }
+            else {
+                currNumInput += currBtn.textContent;
+            }
             
             lastBtnClickedType = "digit";
             updateDisplay();
@@ -167,6 +172,18 @@ document.addEventListener("DOMContentLoaded", event => {
                     }
 
                     lastBtnClickedType = "decimal";
+                    updateDisplay();
+                }
+            }
+            else if (currBtn.id === "backspace"){
+                if (currNumInput !== ""){
+                    currNumInput = currNumInput.slice(0, currNumInput.length-1);
+
+                    if (currNumInput === ""){
+                        currNumInput = "0";
+                    }
+                    
+                    lastBtnClickedType = "backspace";
                     updateDisplay();
                 }
             }
