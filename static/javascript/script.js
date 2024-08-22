@@ -189,4 +189,29 @@ document.addEventListener("DOMContentLoaded", event => {
             }
         });
     });
+
+    // add keyboard support
+    window.addEventListener("keyup", keyupEvent => {
+        console.log(keyupEvent);
+
+        const keyPressed = keyupEvent.key.toLowerCase();
+
+        // find the corresponding dom object
+        let correspondingDomObj;
+
+        if (keyPressed === "enter"){
+            correspondingDomObj = document.querySelector("#equal");
+        }
+        else if (keyPressed === "*"){
+            correspondingDomObj = document.querySelector("#multiply");
+        }
+        else {
+            correspondingDomObj = document.querySelector(`button[data-value="${keyupEvent.key.toLowerCase()}"]`);
+        }
+
+        // simulate a click event on the correspsonding dom object
+        if (correspondingDomObj !== null){
+            correspondingDomObj.click();
+        }
+    });
 });
