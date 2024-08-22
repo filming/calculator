@@ -142,15 +142,18 @@ document.addEventListener("DOMContentLoaded", event => {
 
     numericBtns.forEach(currBtn => {
         currBtn.addEventListener("click", clickEvent => {
-            if (currNumInput === "0"){
-                currNumInput = currBtn.textContent;
+            // check the current input string to make sure we don't get any overflows
+            if (currNumInput.length < 31){
+                if (currNumInput === "0"){
+                    currNumInput = currBtn.textContent;
+                }
+                else {
+                    currNumInput += currBtn.textContent;
+                }
+                
+                lastBtnClickedType = "digit";
+                updateDisplay();
             }
-            else {
-                currNumInput += currBtn.textContent;
-            }
-            
-            lastBtnClickedType = "digit";
-            updateDisplay();
         })
     });
 
@@ -179,7 +182,8 @@ document.addEventListener("DOMContentLoaded", event => {
             }
             else if (currBtn.id === "decimal"){
                 // only allow up to one decimal in the user input string
-                if (!currNumInput.includes(".")){
+                // check the current input string to make sure we don't get any overflows
+                if (!currNumInput.includes(".") && (currNumInput.length < 31)){
                     if (currNumInput !== ""){
                         currNumInput += ".";
                     }
