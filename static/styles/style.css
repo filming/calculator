@@ -87,3 +87,9 @@ body {
 .utility {
     background-color: #70d6ff;
 }
+
+.digit:hover, .arithmetic:hover, .utility:hover {
+    cursor: pointer;
+    opacity: 66%;
+    border-color: #E0E1DD;
+}
