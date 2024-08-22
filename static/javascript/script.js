@@ -222,8 +222,11 @@ document.addEventListener("DOMContentLoaded", event => {
         else if (keyPressed === "*"){
             correspondingDomObj = document.querySelector("#multiply");
         }
-        else if (keyPressed === "_"){
+        else if (keyPressed === "%"){
             correspondingDomObj = document.querySelector("#modulo");
+        }
+        else if (keyPressed === "_"){
+            correspondingDomObj = document.querySelector("#sign");
         }
         else {
             correspondingDomObj = document.querySelector(`button[data-button-value="${keyupEvent.key.toLowerCase()}"]`);
