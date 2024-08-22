@@ -221,8 +221,6 @@ document.addEventListener("DOMContentLoaded", event => {
 
     // add keyboard support
     window.addEventListener("keyup", keyupEvent => {
-        console.log(keyupEvent);
-
         const keyPressed = keyupEvent.key.toLowerCase();
 
         // find the corresponding dom object
