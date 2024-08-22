@@ -4,14 +4,86 @@
     padding: 0;
 }
 
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #074F57;
+    display: flex;
+    align-items: center;
+}
+
+.main {
+    width: 50%;
+    height: 90%;
+    margin: 0 auto;
+    border: 12px black solid;
+    border-radius: 16px;
+    background-color: #adc178;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.main__display {
+    flex-basis: 10%;
+    border: 4px black solid;
+    background-color: #023047;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.main__display-value {
+    color: #E0E1DD;
+    font-size: 56px;
+}
+
+.main__buttons {
+    flex: 1;
+    border: 4px black solid;
+    border-radius: 16px;
+    background-color: #023047;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.main__row1, 
+.main__row2, 
+.main__row3, 
+.main__row4, 
+.main__row5 {
+    flex: 1;
+    display: flex;
+    gap: 4px;
+}
+
+.main__row1 button, 
+.main__row2 button, 
+.main__row3 button, 
+.main__row4 button, 
+.main__row5 button {
+    flex: 1;
+    border: 4px black solid;
+    border-radius: 16px;
+    font-size: 48px;
+    font-weight: 800;
+}
+
 .digit {
-    background-color: lightgrey;
+    background-color: #8e9aaf;
 }
 
 .arithmetic {
-    background-color: orange;
+    background-color: #ff5400;
 }
 
 .utility {
-    background-color: aqua;
+    background-color: #70d6ff;
 }
