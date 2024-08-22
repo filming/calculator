@@ -222,8 +222,11 @@ document.addEventListener("DOMContentLoaded", event => {
         else if (keyPressed === "*"){
             correspondingDomObj = document.querySelector("#multiply");
         }
+        else if (keyPressed === "_"){
+            correspondingDomObj = document.querySelector("#modulo");
+        }
         else {
-            correspondingDomObj = document.querySelector(`button[data-value="${keyupEvent.key.toLowerCase()}"]`);
+            correspondingDomObj = document.querySelector(`button[data-button-value="${keyupEvent.key.toLowerCase()}"]`);
         }
 
         // simulate a click event on the correspsonding dom object
