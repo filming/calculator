@@ -204,6 +204,18 @@ document.addEventListener("DOMContentLoaded", event => {
                     updateDisplay();
                 }
             }
+            else if (currBtn.id === "sign"){
+                if (currNumInput !== ""){
+                    const currNumInputValue = Number(currNumInput);
+
+                    currNumInput = -currNumInputValue;
+                }
+                else {
+                    firstNumber *= -1;
+                }
+
+                updateDisplay();
+            }
         });
     });
 
